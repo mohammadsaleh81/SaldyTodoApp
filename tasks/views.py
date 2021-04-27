@@ -14,6 +14,7 @@ from django.views import View
 from django.shortcuts import redirect
 from django.db import transaction
 
+from .forms import PositionForm
 from .models import Task
 
 
@@ -90,5 +91,18 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
+
+
+class TaskReorder(View):
+    def post(self, request):
+        form = PositionForm(request.POST)
+
+        if form.is_valid():
+            positionList = form.cleaned_data["position"].split(',')
+
+            with transaction.atomic():
+                self.request.user.set_task_order(positionList)
+
+        return redirect(reverse_lazy('tasks'))
 
 

@@ -24,7 +24,7 @@
 
 
 <!-- Hidden form. Form submits new item positions -->
-<form style="display: none;" id="reorderForm" method="post" action="#">
+<form style="display: none;" id="reorderForm" method="post" action="{% url "task-reorder" %}">
     {% csrf_token %}
     <input type="hidden" id="positionInput" name="position">
 </form>
